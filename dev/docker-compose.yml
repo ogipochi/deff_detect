@@ -1,0 +1,86 @@
+version : "3"
+
+services:
+  db:
+    build: ./db
+    ports:
+      - 5431:3306
+    env_file:
+      - ./db/env
+    networks:
+      - database1_network_1
+      - database1_network_2
+      - database1_network_3
+    volumes:
+      - ./db/persistent:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/my.cnf
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart : always
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_USER=coly_rd_2018
+      - PMA_PASSWORD=D9o68hr9_2018
+    networks:
+      - database1_network_2
+    links:
+      - db
+  django_app:
+    tty : true
+    build : ./django_app
+    volumes: 
+      - ./django_app/converter:/opt/services/django_app/src
+    networks:
+      - database1_network_1
+    depends_on:
+      - db
+      - phpmyadmin
+  tornado_app:
+    tty : true
+    build : ./tornado_app
+    links:
+      - django_app
+    volumes:
+      - ./tornado_app/converter:/opt/services/tornado_app/src
+    entrypoint : /bin/sh
+    ports:
+      - 8003:8000
+    depends_on:
+      - db
+      - django_app
+    networks:
+      - database1_network_3
+      - nginx_network_1
+  react_app:
+    tty : true
+    build : ./react_app
+    volumes:
+      - ./react_app/src:/opt/services/react_app/src
+    ports:
+      - 3001:3000
+  nginx:
+    build : ./nginx
+    volumes:
+      - ./tornado_app/converter:/opt/services/tornado_app/src
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - nginx_network_1
+    ports:
+      - 80:80
+    depends_on:
+      - tornado_app
+      - django_app
+networks:
+  nginx_network:
+    driver: bridge
+  database1_network_1:
+    driver: bridge
+  database1_network_2:
+    driver: bridge
+  database1_network_3:
+    driver: bridge
+  nginx_network_1:
+    driver: bridge
