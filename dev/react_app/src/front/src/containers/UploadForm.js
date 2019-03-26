@@ -7,6 +7,7 @@ import {
     changeSheetName, changeVersioin, changeNameDetection, toggleNameEvaluation,
     changeNameEvaluationRear, postCharaNames, getCharaNames, selectSettings
 } from "../actions/convert_actions";
+import {rootUrl} from "../config";
 
 class UploadForm extends Component {
     componentWillMount() {
@@ -78,10 +79,13 @@ class UploadForm extends Component {
                     <div>変換済ファイル</div>
                         {this.props.resultList.map(result => {
                             let datetime = new Date(result.waitingId);
+                            if(result.downloadURL==""){
+                                return (<div>{datetime.toTimeString()}：処理中</div>)
+                            }
                             return (
-                                <div>
+                                <div>{datetime.toTimeString()}：
                                     <a href={result.downloadURL}>
-                                        {datetime.toTimeString()}
+                                        ダウンロード
                                     </a>
 
                                 </div>
