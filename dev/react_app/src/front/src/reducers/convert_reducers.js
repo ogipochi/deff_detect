@@ -1,6 +1,7 @@
 import {GET_CHARA_NAMES,GET_SETTINGS,CHANGE_TEXT,IDENTIFY_FILE, 
     CONVERT_TEXT_TO_LIST,INPUT_EXCEL_FILES, GENERATE_DEFF_FILES, 
-    CHANGE_SHEET_NAME , CAHNGE_VERSION, CHANGE_NAME_DETECTION, TOGGLE_NAME_EVALUATION,CHANGE_NAME_EVALUATION_REAR, POST_CHARA_NAMES, SELECT_SETTINGS} from "../actions/types";
+    CHANGE_SHEET_NAME , CAHNGE_VERSION,RESET_NAME_EVALUATION, CHANGE_NAME_DETECTION, 
+    TOGGLE_NAME_EVALUATION,CHANGE_NAME_EVALUATION_REAR, POST_CHARA_NAMES, SELECT_SETTINGS} from "../actions/types";
 import {baseUrl,rootUrl} from "../config";
 
 const initialState = {
@@ -23,6 +24,9 @@ const initialState = {
 export default function(state=initialState,action){
     const nextState = Object.assign({},state);
     switch(action.type){
+        case RESET_NAME_EVALUATION:
+        nextState.nameEvaluation = [];
+        return nextState;
         case POST_CHARA_NAMES:
         return nextState;
         case CHANGE_NAME_EVALUATION_REAR:

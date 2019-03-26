@@ -9,7 +9,9 @@ import {GET_CHARA_NAMES,
     CHANGE_NAME_DETECTION,
     TOGGLE_NAME_EVALUATION,
     CHANGE_NAME_EVALUATION_REAR,
-    SELECT_SETTINGS
+    SELECT_SETTINGS,
+    RESET_NAME_EVALUATION,
+
 } from "./types";
 import {baseUrl} from "../config";
 
@@ -22,6 +24,11 @@ export const toggleNameEvaluation = (name) =>(dispatch)=>{
     })
 }
 
+export const resetNameEvaluation = () =>(dispatch) =>{
+    dispatch({
+        type : RESET_NAME_EVALUATION
+    })
+}
 export const getSettings = () =>(dispatch)=>{
     const url = baseUrl + "/settings/";
     return fetch(url).then(response=>{

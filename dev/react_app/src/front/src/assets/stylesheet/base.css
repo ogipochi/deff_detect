@@ -16,10 +16,18 @@
 
 .btn-submit--UploadForm{
     background-color: #00b8d4;
+    box-sizing: border-box;
     color:white;
     padding:0.5rem 1rem;
     margin:1rem;
     border-radius: 0.3rem;
+    cursor: pointer;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    font-weight: bold;
+}
+.btn-submit--UploadForm:hover{
+    background-color: #62ebff;
 }
 .area-main--UploadForm{
     width:100%;
@@ -67,4 +75,22 @@
     width:100%;
     border:1px solid black;
     overflow-y: scroll;
+}
+
+.tbl-namelist--UploadForm{
+    border:1px solid black;
+    width:100%;
+    height:auto;
+    margin-top:1rem;
+    margin-bottom:1rem
+}
+tr,th,td{
+    border:1px solid black;
+}
+th {
+    background-color: #263238;
+    color:white;
+}
+.tr-namelist--UploadForm:nth-child(odd){
+    background-color: #84ffff;
 }

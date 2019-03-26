@@ -57,14 +57,14 @@ class CharaNameList(BaseModel):
         sql = "SELECT id,uuid,name_origin,name_rear FROM `character_charaname` WHERE setting_id={}".format(setting_id)
         self._chara_name_list = self.get_data(sql)
     def check_insert_data(self,insert_chara_names):
-        chara_name_rear_list =[]
+        chara_name_origin_list =[]
         for chara_name in self._chara_name_list:
-            chara_name_rear_list.append(chara_name[3])
+            chara_name_origin_list.append(chara_name[2])
         for insert_chara_name in insert_chara_names:
-            if insert_chara_name["name_rear"] in chara_name_rear_list:
+            if insert_chara_name["name_origin"] in chara_name_origin_list:
                 return False
             else:
-                chara_name_rear_list.append(insert_chara_name["name_rear"])
+                chara_name_origin_list.append(insert_chara_name["name_origin"])
         return True
     def add_chara_names(self,chara_names,setting_id=0):
         if not self.check_insert_data(chara_names):

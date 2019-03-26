@@ -5,9 +5,9 @@ import {
     getSettings, changeText, identifyFile,
     convertTextToList, inputExcelFiles, generateDeffFiles,
     changeSheetName, changeVersioin, changeNameDetection, toggleNameEvaluation,
-    changeNameEvaluationRear, postCharaNames, getCharaNames, selectSettings
+    changeNameEvaluationRear, postCharaNames, getCharaNames, selectSettings, resetNameEvaluation
 } from "../actions/convert_actions";
-import {rootUrl} from "../config";
+import { rootUrl } from "../config";
 
 class UploadForm extends Component {
     componentWillMount() {
@@ -26,7 +26,7 @@ class UploadForm extends Component {
     submitData = (e) => {
         this.props.identifyFile();
         this.props.convertTextToList(this.props.waitingInLines[this.props.waitingInLines.length - 1]).then(() => {
-            this.props.generateDeffFiles(this.props.resultList[this.props.resultList.length - 1]).then(()=>{
+            this.props.generateDeffFiles(this.props.resultList[this.props.resultList.length - 1]).then(() => {
                 this.forceUpdate();
             });
         });
@@ -38,13 +38,19 @@ class UploadForm extends Component {
                 setting_id = this.props.settings[i].id;
             }
         }
-        this.props.postCharaNames(setting_id, this.props.nameEvaluation);
+        this.props.postCharaNames(setting_id, this.props.nameEvaluation).then(() => { 
+            this.props.resetNameEvaluation();
+            this.props.getCharaNames().then(()=>{
+                this.forceUpdate();
+            });
+        
+        });
     }
     render() {
         return (
             <div className="area--UploadForm">
-            <div className="area-main--UploadForm">
-                <textarea placeholder="ワードファイルをコピーペーストしてください&#13;&#10;全選択　　：　Ctrl + A (Windows) , Command + A (Mac)&#13;&#10;コピー　　：　Ctrl + C (Windows) , Command + C (Mac)&#13;&#10;ペースト　：　Ctrl + V (Windows) , Command + V (Mac)" className="textarea-word--UploadForm" value={this.props.text} onChange={(e) => { this.props.changeText(e.target.value) }} />
+                <div className="area-main--UploadForm">
+                    <textarea placeholder="ワードファイルをコピーペーストしてください&#13;&#10;全選択　　：　Ctrl + A (Windows) , Command + A (Mac)&#13;&#10;コピー　　：　Ctrl + C (Windows) , Command + C (Mac)&#13;&#10;ペースト　：　Ctrl + V (Windows) , Command + V (Mac)" className="textarea-word--UploadForm" value={this.props.text} onChange={(e) => { this.props.changeText(e.target.value) }} />
                 </div>
                 <div className="area-sub--UploadForm">
                     <div className="area-control--UploadForm">
@@ -62,7 +68,7 @@ class UploadForm extends Component {
                             <input type="radio" id="input-name-detect-01" name="input-name-detect" value="1" checked={this.props.nameDetect == "1"} onChange={(e) => { this.props.changeNameDetection(e.target.value) }} />
                             <label for="input-name-detect-01">名前検出あり</label>
                             <input type="radio" id="input-name-detect-02" name="input-name-detect" value="2" checked={this.props.nameDetect == "2"} onChange={(e) => { this.props.changeNameDetection(e.target.value) }} />
-                            <label for="input-name-detect-02">名前検出あり</label>
+                            <label for="input-name-detect-02">名前検出なし</label>
                         </div>
                         <select onChange={(e) => { this.props.selectSettings(e.target.value) }}>
                             {this.props.settings.map(setting => {
@@ -78,10 +84,10 @@ class UploadForm extends Component {
                         </div>
                     </div>
                     <div className="area-result--UploadForm">
-                    <div>変換済ファイル</div>
+                        <div>変換済ファイル</div>
                         {this.props.resultList.map(result => {
                             let datetime = new Date(result.waitingId);
-                            if(result.downloadURL==""){
+                            if (result.downloadURL == "") {
                                 return (<div>{datetime.toTimeString()}：処理中</div>)
                             }
                             return (
@@ -97,14 +103,22 @@ class UploadForm extends Component {
 
                     <div className="area-name--UploadForm">
                         <div className="box-namelist--UploadForm">
-                            {this.props.charaNames.map(charaName => {
-                                return (
-                                    <div>{charaName.name_origin}=>{charaName.name_rear}</div>
-                                )
-                            })}
+                            <table className="tbl-namelist--UploadForm">
+                                <tr>
+                                    <th>変換前(Word)</th>
+                                    <th>変換後(Excel)</th>
+                                </tr>
+                                {this.props.charaNames.map(charaName => {
+                                    return (
+                                        <tr className="tr-namelist--UploadForm">
+                                            <td>{charaName.name_origin}</td><td>{charaName.name_rear}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </table>
                         </div>
                         <div className="box-evallist--UploadForm">
-                        <div>名前検出</div>
+                            <div>名前検出</div>
                             {this.props.nameEvaluation.map((nameEval, i) => {
                                 return (
                                     <div>
@@ -158,6 +172,7 @@ export default connect(mapStateToProps, {
     changeNameEvaluationRear,
     postCharaNames,
     getCharaNames,
-    selectSettings
+    selectSettings,
+    resetNameEvaluation
 
 })(UploadForm);
