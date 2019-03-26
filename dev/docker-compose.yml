@@ -33,6 +33,8 @@ services:
     build : ./django_app
     volumes: 
       - ./django_app/converter:/opt/services/django_app/src
+    ports :
+     - 8000:8000
     networks:
       - database1_network_1
       - nginx_network_2
@@ -49,7 +51,7 @@ services:
       
     entrypoint : /bin/sh
     ports:
-      - 8003:8000
+      - 8888:8888
     depends_on:
       - db
       - django_app
@@ -62,7 +64,7 @@ services:
     volumes:
       - ./react_app/src:/opt/services/react_app/src
     ports:
-      - 3001:3000
+      - 3000:3000
   nginx:
     build : ./nginx
     volumes:

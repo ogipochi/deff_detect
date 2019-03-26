@@ -9,4 +9,6 @@ RUN pip install numpy
 RUN pip install openpyxl
 WORKDIR /opt/services/tornado_app/src
 
+EXPOSE 8888
+
 ENTRYPOINT ["sh","startup.sh"]

@@ -3,6 +3,7 @@ FROM python:3.6
 
 RUN pip install django
 RUN pip install pymysql
+RUN pip install gunicorn
 RUN mkdir -p /opt/services/django_app/src
 WORKDIR /opt/services/django_app/src
 
