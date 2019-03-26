@@ -1,7 +1,7 @@
 import {GET_CHARA_NAMES,GET_SETTINGS,CHANGE_TEXT,IDENTIFY_FILE, 
     CONVERT_TEXT_TO_LIST,INPUT_EXCEL_FILES, GENERATE_DEFF_FILES, 
     CHANGE_SHEET_NAME , CAHNGE_VERSION, CHANGE_NAME_DETECTION, TOGGLE_NAME_EVALUATION,CHANGE_NAME_EVALUATION_REAR, POST_CHARA_NAMES, SELECT_SETTINGS} from "../actions/types";
-import {baseUrl} from "../config";
+import {baseUrl,rootUrl} from "../config";
 
 const initialState = {
     excelFileData:"",
@@ -62,7 +62,7 @@ export default function(state=initialState,action){
         let filePath = action.payload.data["file_path"]
         for(let i in nextState.resultList){
             if (nextState.resultList[i].waitingId ==id){
-                nextState.resultList[i].downloadURL = `${baseUrl}/${filePath}`
+                nextState.resultList[i].downloadURL = `${rootUrl}/${filePath}`
                 
             }
         }
