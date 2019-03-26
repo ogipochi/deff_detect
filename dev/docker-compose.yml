@@ -48,8 +48,6 @@ services:
       - django_app
     volumes:
       - ./tornado_app/converter:/opt/services/tornado_app/src
-      
-    entrypoint : /bin/sh
     ports:
       - 8888:8888
     depends_on:
