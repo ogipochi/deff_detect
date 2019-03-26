@@ -45,6 +45,7 @@ services:
       - django_app
     volumes:
       - ./tornado_app/converter:/opt/services/tornado_app/src
+      - ./react_app/src :/opt/servies/react_app/src
     entrypoint : /bin/sh
     ports:
       - 8003:8000

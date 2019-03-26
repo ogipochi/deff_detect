@@ -14,10 +14,10 @@ import re
 class Application(web.Application):
     def __init__(self,**kwargs):
         handlers = [
-            (r"/chara_names/(\d+)/",CharaNameHandler),
-            (r"/settings/",SettingHandler),
-            (r"/text_to_list/",TextToListHandler),
-            (r"/generate_deff/",GenerateDeffHandler),
+            (r"/api/chara_names/(\d+)/",CharaNameHandler),
+            (r"/api/settings/",SettingHandler),
+            (r"/api/text_to_list/",TextToListHandler),
+            (r"/api/generate_deff/",GenerateDeffHandler),
         ]
         super(Application, self).__init__(handlers, **kwargs) 
 
