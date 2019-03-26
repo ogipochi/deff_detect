@@ -35,6 +35,7 @@ services:
       - ./django_app/converter:/opt/services/django_app/src
     networks:
       - database1_network_1
+      - nginx_network_2
     depends_on:
       - db
       - phpmyadmin
@@ -67,9 +68,10 @@ services:
     volumes:
       - ./tornado_app/converter:/opt/services/tornado_app/src
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./react_app/src :/opt/servies/react_app/src
+      - ./react_app/src:/opt/services/react_app/src
     networks:
       - nginx_network_1
+      - nginx_network_2
     ports:
       - 80:80
     depends_on:
@@ -85,4 +87,6 @@ networks:
   database1_network_3:
     driver: bridge
   nginx_network_1:
+    driver: bridge
+  nginx_network_2:
     driver: bridge
