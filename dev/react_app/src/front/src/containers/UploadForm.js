@@ -26,7 +26,9 @@ class UploadForm extends Component {
     submitData = (e) => {
         this.props.identifyFile();
         this.props.convertTextToList(this.props.waitingInLines[this.props.waitingInLines.length - 1]).then(() => {
-            this.props.generateDeffFiles(this.props.resultList[this.props.resultList.length - 1]);
+            this.props.generateDeffFiles(this.props.resultList[this.props.resultList.length - 1]).then(()=>{
+                this.forceUpdate();
+            });
         });
     }
     submitEvalNames = (e) => {
