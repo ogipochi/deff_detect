@@ -44,6 +44,7 @@ services:
   tornado_app:
     tty : true
     build : ./tornado_app
+    entrypoint : /bin/sh
     links:
       - django_app
     volumes:

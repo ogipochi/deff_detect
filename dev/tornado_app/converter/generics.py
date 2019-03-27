@@ -120,6 +120,8 @@ class TextToList:
                 txt_obj["remarks"] = ""
                 txt_obj["name"] = []
                 self.converted_text_obj_list.append(txt_obj.copy())
+                if self.name_eval:
+                    self.name_eval=""
                 continue
             ##名前の可能性のあったもの########################################################
             if self.name_eval and self.name_detect:
@@ -446,9 +448,9 @@ class DeffDetecter:
         for i in sorted(self.data_frame_ids):
             sheet_name = self.data_frame_ids[i]
             df = self.data_frames[sheet_name]
-            for row_num , row_data in enumerate(df.iterrows):
-                text = row_data[1][self.dialog_sheet_col]
-                text_type = row_data[1]["C"]
+            for row_num , row_data in enumerate(df.iterrows()):
+                text = row_data[1][6]
+                text_type = row_data[1][2]
                 if not text_type=="吹き出し":
                     continue
                 if type(text) == type(0.6):

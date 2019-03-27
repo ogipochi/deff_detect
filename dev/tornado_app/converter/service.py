@@ -119,7 +119,7 @@ class GenerateDeffHandler(web.RequestHandler):
         similarity = data["similarity"]
         file_data = data["fileData"].split(";base64,")[-1].encode()
         file_type = data["fileType"]
-        versioin = data["version"]
+        version = data["version"]
         # まずローカルにデータを保存する
         
         prefix = hashlib.sha224(self.request.body).hexdigest()
