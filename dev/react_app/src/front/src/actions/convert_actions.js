@@ -2,6 +2,9 @@ import {GET_CHARA_NAMES,
     GET_SETTINGS,CHANGE_TEXT,
     POST_CHARA_NAMES,
     CONVERT_TEXT_TO_LIST,IDENTIFY_FILE,
+    CHANGE_CHARA_ORIGIN,
+    CHANGE_CHARA_REAR,
+    ADD_CHARA_NAME,
     RESET_TEXT,INPUT_EXCEL_FILES,
     GENERATE_DEFF_FILES,
     CHANGE_SHEET_NAME,
@@ -16,6 +19,12 @@ import {GET_CHARA_NAMES,
 import {baseUrl} from "../config";
 
 
+export const changeCharaOrigin =(value) =>(dispatch)=>{
+    dispatch({
+        type : CHANGE_CHARA_ORIGIN,
+        payload:value
+    })
+}
 
 export const toggleNameEvaluation = (name) =>(dispatch)=>{
     dispatch({

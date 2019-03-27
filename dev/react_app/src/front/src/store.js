@@ -12,7 +12,7 @@ const  store = createStore(
     initialStore,
     compose(
         applyMiddleware(...middleware),
-        //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // Redux Dev Tool使用のための設定
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // Redux Dev Tool使用のための設定
     )
 )
 

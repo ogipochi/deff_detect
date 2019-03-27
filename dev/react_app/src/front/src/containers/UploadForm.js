@@ -100,7 +100,6 @@ class UploadForm extends Component {
                             )
                         })}
                     </div>
-
                     <div className="area-name--UploadForm">
                         <div className="box-namelist--UploadForm">
                             <table className="tbl-namelist--UploadForm">

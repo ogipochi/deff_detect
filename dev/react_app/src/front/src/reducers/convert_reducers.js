@@ -8,6 +8,8 @@ const initialState = {
     excelFileData:"",
     excelFileType:"",
     excelFileName:"",
+    nameOriginAddition:"",
+    nameRearAddition:"",
     text : "",
     settings:[],
     charaNames:[],
