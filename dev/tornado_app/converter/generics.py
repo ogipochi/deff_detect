@@ -459,7 +459,9 @@ class DeffDetecter:
             else:
                 token = True
             text_stock = text
+            
         self.text_list  =text_list_pasted
+        print(self.text_list)
     def _detect_func_v2(self):
         self._paste_text_list_together()
         for i in sorted(self.data_frame_ids):
