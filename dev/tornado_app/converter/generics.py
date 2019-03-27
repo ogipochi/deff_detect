@@ -36,7 +36,79 @@ class TextToList:
             self.text_list.append(text)
         
         return self.text_list
+    def _convert_text_to_obj_list_v2(self):
+        txt_obj = self.default_txt_obj.copy()
+        name_container = []
+        text_type = "mono"
+        for num,text in enumerate(self.text_list):
 
+            if len(text) == 0:
+                
+                txt_obj["type"] = "blank"
+                txt_obj["content"] = ""
+                txt_obj["remarks"] = ""
+                txt_obj["name"] = []
+                self.converted_text_obj_list.append(txt_obj)
+                txt_obj = self.default_txt_obj.copy()
+                
+                continue
+            
+            if "【" in text and "】" in text:
+                txt_obj["type"] = "addition"
+                txt_obj["content"] = text
+                txt_obj["remarks"] = ""
+                txt_obj["name"] = []
+                self.converted_text_obj_list.append(txt_obj)
+                txt_obj = self.default_txt_obj.copy()
+
+                name_container = []
+                text_type = "mono"
+                continue
+            elif "SE" in text:
+                txt_obj["type"] = "addition"
+                txt_obj["content"] = text
+                txt_obj["remarks"] = ""
+                txt_obj["name"] = []
+                self.converted_text_obj_list.append(txt_obj)
+                txt_obj = self.default_txt_obj.copy()
+                name_container = []
+                text_type = "mono"
+                continue
+            elif text[0] in ["<","＜","〈"] and text[-1] in [">","＞","〉"]:
+                txt_obj["type"] = "addition"
+                txt_obj["content"] = text
+                txt_obj["remarks"] = ""
+                txt_obj["name"] = []
+                self.converted_text_obj_list.append(txt_obj)
+                txt_obj = self.default_txt_obj.copy()
+                name_container = []
+                text_type = "mono"
+                continue
+            elif text in ["T","Ｔ"]:
+                text_type = "mono"
+                name_container = []
+                continue
+            elif text in self.conversion_table:
+                text_type = "dialog"
+                name_container = [self.conversion_table[text]]
+                continue
+            elif text == self.heroin:
+                name_container = [self.heroin]
+                text_type = "hero"
+                continue
+            elif self.name_detect and len(name_container)==0 and len(list(text))<=6:
+                self.name_eval_list.append(text)
+                name_container = [text]
+                text_type = "dialog"
+                continue
+            else:
+
+                txt_obj["content"] = text
+                txt_obj["type"] = text_type
+                txt_obj["name"] = name_container
+                self.converted_text_obj_list.append(txt_obj)
+                txt_obj = self.default_txt_obj.copy()
+                continue
     def _convert_text_to_obj_list_v1(self):
         txt_obj = self.default_txt_obj.copy()
 
@@ -119,7 +191,7 @@ class TextToList:
                 continue
 
     
-    def _convert_text_to_obj_list_v2(self):
+    def __convert_text_to_obj_list_v2(self):
         txt_obj = self.default_txt_obj.copy()
         line_break_names = [] # 空の改行で会話文が区切られたときのために名前を記憶しておくセル
         for num,text in enumerate(self.text_list):
@@ -266,10 +338,11 @@ import time
 
 
 class DeffDetecter:
-    def __init__(self , data_frames , data_frame_ids , text_list , list_window=30 , initial_row=3 , similarity=0.7 , dialog_sheet_col=7):
+    def __init__(self , data_frames , data_frame_ids , text_list , version=1, list_window=30 , initial_row=3 , similarity=0.7 , dialog_sheet_col=7):
         self.data_frames = data_frames
         self.data_frame_ids = data_frame_ids
         self.text_list = text_list
+        self.version = version
         self.list_window = list_window
         self.similarity = similarity
         self.dialog_sheet_col = dialog_sheet_col
@@ -300,14 +373,14 @@ class DeffDetecter:
         ]
     def similar(self,a,b):
         return SequenceMatcher(None, a, b).ratio()
-    def detect(self):
+    def _detect_func_v1(self):
         for i in sorted(self.data_frame_ids):
             sheet_name = self.data_frame_ids[i]
             df = self.data_frames[sheet_name]
             for row_num,row_data in enumerate(df.iterrows()):
                 # print("DEFF:",self.deff_list)
                 text = row_data[1][self.dialog_sheet_col]
-                if type(text) == type(0.6):
+                if type(text) == type(0.6):  # float削除用
                     continue
                 else:
                     text_normalized = text
@@ -325,7 +398,6 @@ class DeffDetecter:
                         if self.similar(look_up_text["content"],text_normalized) == 1:
                             find_token = True
                             deff_elem["type"] = "none"
-                            
                             if not look_up_id==0:
                                 for add_id in range(look_up_id):
                                     add_text = look_up_text_list[add_id]
@@ -362,7 +434,6 @@ class DeffDetecter:
                     if not find_token:
                         deff_elem["type"] = "del"
                         self.deff_list.append(deff_elem)
-        print(self.text_list)
         for add_id,add_text in enumerate(self.text_list):
             if add_text["type"] in ["blank","addition"]:
                 continue
@@ -371,6 +442,81 @@ class DeffDetecter:
             addition_elem["alt_text"] = add_text["content"]
             addition_elem["alt_name"] = add_text["name"]
             self.deff_list.append(addition_elem)
+    def _detect_func_v2(self):
+        for i in sorted(self.data_frame_ids):
+            sheet_name = self.data_frame_ids[i]
+            df = self.data_frames[sheet_name]
+            for row_num , row_data in enumerate(df.iterrows):
+                text = row_data[1][self.dialog_sheet_col]
+                text_type = row_data[1]["C"]
+                if not text_type=="吹き出し":
+                    continue
+                if type(text) == type(0.6):
+                    continue
+                text_normalized = re.sub(r"<color=#[a-z0-9]{6}>","",text)
+                text_normalized = text.replace("</color>","")
+                deff_elem = self.default_deff_elem.copy()
+                deff_elem["sheet_name"] = sheet_name
+                deff_elem["row"] = int(row_num) + (self.initial_row - 1)
+                deff_elem["original_text"] = text
+                look_up_text_list = self.text_list[0:self.list_window]
+                for look_up_id,look_up_text in enumerate(look_up_text_list):
+                    find_token = False
+                    
+                    if self.similar(look_up_text["content"],text_normalized) == 1:
+                        find_token = True
+                        deff_elem["type"] = "none"
+                        if not look_up_id==0:
+                            for add_id in range(look_up_id):
+                                add_text = look_up_text_list[add_id]
+                                if add_text["type"] in ["blank","addition"]:
+                                    continue
+                                addition_elem = self.default_deff_elem.copy()
+                                addition_elem["type"] = "add"
+                                addition_elem["alt_text"] = look_up_text_list[add_id]["content"]
+                                addition_elem["alt_name"] = look_up_text_list[add_id]["name"]
+                                self.deff_list.append(addition_elem)
+                        self.deff_list.append(deff_elem)
+                        self.text_list = self.text_list[(look_up_id+1):]
+                        
+                        break
+                    elif self.similar(look_up_text["content"],text_normalized) >= self.similarity:
+                        find_token = True
+                        deff_elem["type"] = "alt"
+                        deff_elem["alt_text"] = look_up_text["content"]
+                        if not look_up_id==0:
+                            for add_id in range(look_up_id):
+                                add_text = look_up_text_list[add_id]
+                                if add_text["type"] in ["blank","addition"]:
+                                    continue
+                                addition_elem = self.default_deff_elem.copy()
+                                addition_elem["type"] = "add"
+                                addition_elem["alt_text"] = add_text["content"]
+                                addition_elem["alt_name"] =add_text["name"]
+                                self.deff_list.append(addition_elem)
+                            # self.deff_list.append(deff_elem)
+                            # self.text_list = self.text_list[(look_up_id+1):]
+                        self.deff_list.append(deff_elem)
+                        self.text_list = self.text_list[(look_up_id+1):]
+                        break
+                if not find_token:
+                    deff_elem["type"] = "del"
+                    self.deff_list.append(deff_elem)
+        for add_id,add_text in enumerate(self.text_list):
+            if add_text["type"] in ["blank","addition"]:
+                continue
+            addition_elem = self.default_deff_elem.copy()
+            addition_elem["type"] = "add"
+            addition_elem["alt_text"] = add_text["content"]
+            addition_elem["alt_name"] = add_text["name"]
+            self.deff_list.append(addition_elem)
+    def detect(self):
+        if self.version==1:
+            self._detect_func_v1()
+        elif self.version==2:
+            self._detect_func_v2()
+        else:
+            return False
         return self.deff_list
     def create_wb(self,waiting_id):
         wb = Workbook()

@@ -64,7 +64,6 @@ class CharaNameHandler(web.RequestHandler):
                 )
         chara_name_list = CharaNameList(setting_id)
         result = chara_name_list.add_chara_names(chara_names,setting_id)
-        print(result)
         response = {
             "status":10
         }
@@ -120,7 +119,7 @@ class GenerateDeffHandler(web.RequestHandler):
         similarity = data["similarity"]
         file_data = data["fileData"].split(";base64,")[-1].encode()
         file_type = data["fileType"]
-
+        versioin = data["version"]
         # まずローカルにデータを保存する
         
         prefix = hashlib.sha224(self.request.body).hexdigest()
@@ -149,6 +148,7 @@ class GenerateDeffHandler(web.RequestHandler):
             data_frames=dfs,
             data_frame_ids=sheet_name_id_dict,
             text_list = text_list,
+            version = int(version)
             )
         deff_list = deff_detecter.detect()
         file_path = deff_detecter.create_wb(waiting_id)

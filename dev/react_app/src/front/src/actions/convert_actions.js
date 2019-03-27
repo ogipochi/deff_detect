@@ -145,6 +145,7 @@ export const generateDeffFiles = (data) => (dispatch) =>{
     postData.similarity = data.similarity;
     postData.fileData = data.excelFileData;
     postData.fileType = data.excelFileType;
+    postData.version = data.version;
     
     return fetch(url,{method:"POST",body:JSON.stringify(postData)}).then(response=>{
         if(!response.ok){

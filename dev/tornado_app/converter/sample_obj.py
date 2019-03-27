@@ -426,7 +426,6 @@ miyase
     {
         "version":2,
         "text":"""
-
 ■1話【胡利衣学園・校門前（夕）】
 T
 やりきれなさの全てを込めた激しい吐息と同時にハンドルに突っ伏し、
@@ -456,20 +455,295 @@ T
 
 でも多分、もうすぐ……
 
-miyase（微妙な顔）
+miyase
 少なくとも、彼は
 カナメくんのこと
 すごく好きなんだろうなと
 
 【街中（昼）※S1カナメマップ111b～112a回想】
 
-カナメ
+宮瀬豪
 そう言って本当に
 怪しくない奴
 あんまり知らないんだけど
 
+【マトリ・課（夕・回想）】※S2⑥18話回想
 
+＜回想終了＞
 
-        """
+SE：着信音
+
+ヒロイン
+？
+丁度いい、というのは？
+        """,
+        "output":[
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"addition",
+            "name":[],
+            "content":"■1話【胡利衣学園・校門前（夕）】",
+            "remarks":""
+        },
+        {
+            "type":"mono",
+            "name":[],
+            "content":"やりきれなさの全てを込めた激しい吐息と同時にハンドルに突っ伏し、",
+            "remarks":""
+        },
+        {
+            "type":"mono",
+            "name":[],
+            "content":"私は低い唸り声を漏らす。",
+            "remarks":""
+        },
+
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"mono",
+            "name":[],
+            "content":"奥歯を噛みしめても堪えきれず、",
+            "remarks":""
+        },
+        {
+            "type":"mono",
+            "name":[],
+            "content":"尖った感情がこぼれた。",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"hero",
+            "name":["ヒロイン"],
+            "content":"（……１６時か。",
+            "remarks":""
+        },
+        {
+            "type":"hero",
+            "name":["ヒロイン"],
+            "content":"もうそろそろかな）",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["tanaka"],
+            "content":"お姉さん、誰か待ってるんですか？",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["tanaka"],
+            "content":"俺、よかったら呼んできますよ",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"もー、いいからお前ら帰れって。",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"みっちゃんには言うなよ！",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"いやー、すみません。",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"おバカばっかりで",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"hero",
+            "name":["ヒロイン"],
+            "content":"ああ、いえいえ。",
+            "remarks":""
+        },
+        {
+            "type":"hero",
+            "name":["ヒロイン"],
+            "content":"お気遣いを、どうもありがとう",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"hero",
+            "name":["ヒロイン"],
+            "content":"でも多分、もうすぐ……",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"少なくとも、彼は",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"カナメくんのこと",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"すごく好きなんだろうなと",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"addition",
+            "name":[],
+            "content":"【街中（昼）※S1カナメマップ111b～112a回想】",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"そう言って本当に",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"怪しくない奴",
+            "remarks":""
+        },
+        {
+            "type":"dialog",
+            "name":["miyase"],
+            "content":"あんまり知らないんだけど",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"addition",
+            "name":[],
+            "content":"【マトリ・課（夕・回想）】※S2⑥18話回想",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"addition",
+            "name":[],
+            "content":"＜回想終了＞",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"addition",
+            "name":[],
+            "content":"SE：着信音",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        {
+            "type":"hero",
+            "name":["ヒロイン"],
+            "content":"？",
+            "remarks":""
+        },
+        {
+            "type":"hero",
+            "name":["ヒロイン"],
+            "content":"丁度いい、というのは？",
+            "remarks":""
+        },
+        {
+            "type":"blank",
+            "name":[],
+            "content":"",
+            "remarks":""
+        },
+        ],
+    "name_eval":["ガッチャマン","海野沙知","多田野元"]
     }
 ]
