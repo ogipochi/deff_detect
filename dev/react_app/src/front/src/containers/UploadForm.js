@@ -70,7 +70,7 @@ class UploadForm extends Component {
                             <input type="radio" id="input-name-detect-02" name="input-name-detect" value="2" checked={this.props.nameDetect == "2"} onChange={(e) => { this.props.changeNameDetection(e.target.value) }} />
                             <label for="input-name-detect-02">名前検出なし</label>
                         </div>
-                        <select onChange={(e) => { this.props.selectSettings(e.target.value) }}>
+                        <select onChange={(e) => { this.props.selectSettings(e.target.value);this.props.getCharaNames(e.target.value) }}>
                             {this.props.settings.map(setting => {
                                 return (
                                     <option value={setting.id}>

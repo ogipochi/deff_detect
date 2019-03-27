@@ -444,7 +444,24 @@ class DeffDetecter:
             addition_elem["alt_text"] = add_text["content"]
             addition_elem["alt_name"] = add_text["name"]
             self.deff_list.append(addition_elem)
+    def _paste_text_list_together(self):
+        text_list_pasted = []
+        token = False
+        text_stock = None
+        for text in self.text_list:
+            if text["type"] =="blank":
+                token = False
+                if text_stock:
+                    text_list_pasted.append(text_stock)
+            elif token and text_stock["type"] == text["type"] and text_stock["name"] == text["name"]:
+                text_stock["content"] += "\n"
+                text_stock["content"] += text["content"]
+            else:
+                token = True
+            text_stock = text
+        self.text_list  =self.text_list_pasted
     def _detect_func_v2(self):
+        self._paste_text_list_together()
         for i in sorted(self.data_frame_ids):
             sheet_name = self.data_frame_ids[i]
             df = self.data_frames[sheet_name]
