@@ -35,7 +35,7 @@ class CharaName(models.Model):
     """
     uuid = models.UUIDField(db_index=True,default=uuid_lib.uuid4,editable=False)
     setting = models.ForeignKey(Setting,on_delete=models.CASCADE)
-    name_origin = models.CharField('名前（変換前）',max_length=31,unique=True)
+    name_origin = models.CharField('名前（変換前）',max_length=31)
     name_rear = models.CharField('名前(変換後)',max_length=31)
     def __str__(self):
         return self.name_origin + '==>' + self.name_rear

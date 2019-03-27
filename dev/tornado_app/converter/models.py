@@ -58,21 +58,24 @@ class CharaNameList(BaseModel):
         self._chara_name_list = self.get_data(sql)
     def check_insert_data(self,insert_chara_names):
         chara_name_origin_list =[]
+        checked_chara_names = []
         for chara_name in self._chara_name_list:
             chara_name_origin_list.append(chara_name[2])
         for insert_chara_name in insert_chara_names:
             if insert_chara_name["name_origin"] in chara_name_origin_list:
-                return False
+                continue
             else:
+                checked_chara_names.append(insert_chara_name)
                 chara_name_origin_list.append(insert_chara_name["name_origin"])
-        return True
-    def add_chara_names(self,chara_names,setting_id=0):
-        if not self.check_insert_data(chara_names):
-            return "Name Rear is duplicated.please check Name Rear."
+        return checked_chara_names
+    def add_chara_names(self,chara_names,setting_id):
+        insert_data = self.check_insert_data(chara_names)
+        print(self._chara_name_list)
+        print(insert_data)
         sql_tmp_insert = "INSERT INTO `character_charaname` (`id`, `uuid`, `name_origin`, `name_rear`, `setting_id`) VALUES (NULL, '{}', '{}', '{}', '{}');"
         #sql_tmp_update = "UPDATE `character_charaname` SET `uuid` = '{}' WHERE `character_charaname`.`name_origin` = `{}` AND `character_charaname`.`name_rear` = `{}`;"
         self.connect()
-        for i,chara_name in enumerate(chara_names):
+        for i,chara_name in enumerate(insert_data):
             
             chara_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS,chara_name["name_rear"]))
             chara_uuid = chara_uuid.replace("-","")

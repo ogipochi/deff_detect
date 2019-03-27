@@ -54,7 +54,6 @@ class CharaNameHandler(web.RequestHandler):
     def post(self,setting_id):
         data = json.loads(self.request.body)
         chara_names = []
-        print(data)
         for name_obj in data:
             if name_obj['checked']:
                 chara_names.append(
