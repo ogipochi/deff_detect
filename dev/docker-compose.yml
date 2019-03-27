@@ -44,7 +44,7 @@ services:
   tornado_app:
     tty : true
     build : ./tornado_app
-    entrypoint : /bin/sh
+    #entrypoint : /bin/sh
     links:
       - django_app
     volumes:
@@ -70,6 +70,7 @@ services:
       - ./tornado_app/converter:/opt/services/tornado_app/src
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./react_app/src:/opt/services/react_app/src
+      - ./django_app:/opt/services/django_app/src
     networks:
       - nginx_network_1
       - nginx_network_2
