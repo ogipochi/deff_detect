@@ -458,7 +458,7 @@ class DeffDetecter:
                 text_stock["content"] += text["content"]
             else:
                 token = True
-            text_stock = text
+                text_stock = text
             
         self.text_list  =text_list_pasted
         print(self.text_list)
@@ -475,7 +475,7 @@ class DeffDetecter:
                 if type(text) == type(0.6):
                     continue
                 text_normalized = re.sub(r"<color=#[a-z0-9]{6}>","",text)
-                text_normalized = text.replace("</color>","")
+                text_normalized = text_normalized.replace("</color>","")
                 deff_elem = self.default_deff_elem.copy()
                 deff_elem["sheet_name"] = sheet_name
                 deff_elem["row"] = int(row_num) + (self.initial_row - 1)
