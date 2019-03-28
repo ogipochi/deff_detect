@@ -488,6 +488,10 @@ class DeffDetecter:
                 deff_elem["row"] = int(row_num) + (self.initial_row - 1)
                 deff_elem["original_text"] = text
                 look_up_text_list = self.text_list[0:self.list_window]
+                if len(text_normalized) == 0:
+                    deff_elem["type"] = "blank"
+                    self.deff_list.append(deff_elem)
+                    continue
                 for look_up_id,look_up_text in enumerate(look_up_text_list):
                     # 改行を削除しておく
                     #look_up_text_normalized = look_up_text["content"].replace("\r\n","")
@@ -497,13 +501,8 @@ class DeffDetecter:
                     #text_normalized = text_normalized.replace("\r\n","")
                     #text_normalized = text_normalized.replace("\n","")
                     #text_normalized = text_normalized.replace("\r","")
-                    if len(text_normalized) == 0:
-                        deff_elem["type"] = "blank"
-                        find_token = True
-                        self.deff_list.append(deff_elem)
-                        self.text_list = self.text_list[(look_up_id+1):]
-                        break
-                    elif self.similar(look_up_text_normalized,text_normalized) == 1:
+                    
+                    if self.similar(look_up_text_normalized,text_normalized) == 1:
                         find_token = True
                         # look_upの中の追加要素を探る
                         deff_elem["type"] = "none"
@@ -523,7 +522,7 @@ class DeffDetecter:
                         self.text_list = self.text_list[(look_up_id+1):]
                         
                         break
-                    elif self.similar(look_up_text_normalized,text_normalized) >= self.similarity:
+                    elif len(text_normalized) > 4 and self.similar(look_up_text_normalized,text_normalized) >= self.similarity:
                         find_token = True
                         deff_elem["type"] = "alt"
                         deff_elem["alt_text"] = look_up_text["content"]
