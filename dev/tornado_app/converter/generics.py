@@ -496,10 +496,12 @@ class DeffDetecter:
                     text_normalized = text_normalized.replace("\r\n","")
                     text_normalized = text_normalized.replace("\n","")
                     text_normalized = text_normalized.replace("\r","")
+
                     if self.similar(look_up_text_normalized,text_normalized) == 1:
                         find_token = True
                         # look_upの中の追加要素を探る
                         deff_elem["type"] = "none"
+                        deff_elem["alt_text"] = look_up_text["content"]
                         if not look_up_id==0:
                             for add_id in range(look_up_id):
                                 add_text = look_up_text_list[add_id]
@@ -515,7 +517,7 @@ class DeffDetecter:
                         self.text_list = self.text_list[(look_up_id+1):]
                         
                         break
-                    elif self.similar(look_up_text_normalized,text_normalized) >= self.similarity:
+                    elif len(text_normalized)>4 and self.similar(look_up_text_normalized,text_normalized) >= self.similarity:
                         find_token = True
                         deff_elem["type"] = "alt"
                         deff_elem["alt_text"] = look_up_text["content"]
