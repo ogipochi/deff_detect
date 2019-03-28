@@ -503,7 +503,7 @@ class DeffDetecter:
                         deff_elem["type"] = "none"
                         deff_elem["alt_text"] = look_up_text["content"]
                         if not look_up_id==0:
-                            for add_id in range(look_up_id):
+                            for add_id in range(1,look_up_id):
                                 add_text = look_up_text_list[add_id]
                                 if add_text["type"] in ["blank","addition"]:
                                     continue
@@ -522,7 +522,7 @@ class DeffDetecter:
                         deff_elem["type"] = "alt"
                         deff_elem["alt_text"] = look_up_text["content"]
                         if not look_up_id==0:
-                            for add_id in range(look_up_id):
+                            for add_id in range(1,look_up_id):
                                 add_text = look_up_text_list[add_id]
                                 if add_text["type"] in ["blank","addition"]:
                                     continue
