@@ -554,6 +554,11 @@ class DeffDetecter:
         ws['G1'] = 'タイプ'
         print("this")
         for i,deff_elem in enumerate(self.deff_list):
+            line_height = 1
+            if deff_elem["original_text"].count("\n") > deff_elem["alt_text"].count("\n"):
+               line_height = deff_elem["original_text"].count("\n")
+            else:
+               line_height = deff_elem["alt_text"].count("\n")
             if deff_elem["type"] == "del":
                 color = "ff8a80"
             elif deff_elem["type"] == "add":
@@ -564,6 +569,7 @@ class DeffDetecter:
                 color = "FFFFFF"
             fill = openpyxl.styles.PatternFill(patternType='solid',
                                    fgColor=color)
+            ws.row_dimensions[i+3].height = line_height * 35
             ws['A{}'.format(i+3)] = deff_elem["sheet_name"]
             ws['A{}'.format(i+3)].fill = fill
             ws['B{}'.format(i+3)] = deff_elem["row"]
