@@ -136,14 +136,32 @@ class GenerateDeffHandler(web.RequestHandler):
         dfs = {}
         sheet_name_id_dict = {}
         for i,sheet_name in enumerate(xl_file.sheet_names):
+            print(sheet_name)
             if (re.findall("[0-9]",sheet_name)):
                 sheet_id = re.findall("[0-9]+",sheet_name)[0]
+                if "a" in sheet_name:
+                    sheet_id = int(sheet_id) * 10
+                elif "b" in sheet_name:
+                    sheet_id = int(sheet_id) * 10 + 1
+                elif "c" in sheet_name:
+                    sheet_id = int(sheet_id) * 10 + 2
+                else:
+                    sheet_id = int(sheet_id) * 10
                 dfs[sheet_name] =  xl_file.parse(sheet_name)
                 sheet_name_id_dict[int(sheet_id)] = sheet_name
             elif (re.findall("[０-９]",sheet_name)):
                 sheet_id = re.findall("[０-９]+",sheet_name)[0]
+                if "a" in sheet_name:
+                    sheet_id = int(sheet_id) * 10
+                elif "b" in sheet_name:
+                    sheet_id = int(sheet_id) * 10 + 1
+                elif "c" in sheet_name:
+                    sheet_id = int(sheet_id) * 10 + 2
+                else:
+                    sheet_id = int(sheet_id) * 10
                 dfs[sheet_name] =  xl_file.parse(sheet_name)
                 sheet_name_id_dict[int(sheet_id)] = sheet_name
+        print(sheet_name_id_dict)
         deff_detecter = DeffDetecter(
             data_frames=dfs,
             data_frame_ids=sheet_name_id_dict,

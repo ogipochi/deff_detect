@@ -471,6 +471,7 @@ class DeffDetecter:
         self._paste_text_list_together()
         for i in sorted(self.data_frame_ids):
             sheet_name = self.data_frame_ids[i]
+            print(sheet_name)
             df = self.data_frames[sheet_name]
             for row_num , row_data in enumerate(df.iterrows()):
                 text = row_data[1][6]
@@ -489,14 +490,13 @@ class DeffDetecter:
                 look_up_text_list = self.text_list[0:self.list_window]
                 for look_up_id,look_up_text in enumerate(look_up_text_list):
                     # 改行を削除しておく
-                    look_up_text_normalized = look_up_text["content"].replace("\r\n","")
-                    look_up_text_normalized = look_up_text_normalized.replace("\n","")
-                    look_up_text_normalized = look_up_text_normalized.replace("\r","")
-
-                    text_normalized = text_normalized.replace("\r\n","")
-                    text_normalized = text_normalized.replace("\n","")
-                    text_normalized = text_normalized.replace("\r","")
-
+                    #look_up_text_normalized = look_up_text["content"].replace("\r\n","")
+                    #look_up_text_normalized = look_up_text_normalized.replace("\n","")
+                    #look_up_text_normalized = look_up_text_normalized.replace("\r","")
+                    look_up_text_normalized = look_up_text["content"]
+                    #text_normalized = text_normalized.replace("\r\n","")
+                    #text_normalized = text_normalized.replace("\n","")
+                    #text_normalized = text_normalized.replace("\r","")
                     if self.similar(look_up_text_normalized,text_normalized) == 1:
                         find_token = True
                         # look_upの中の追加要素を探る
