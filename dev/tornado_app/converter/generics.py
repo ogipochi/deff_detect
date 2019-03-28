@@ -4,6 +4,7 @@ from difflib import SequenceMatcher
 import numpy as np
 import math
 from openpyxl import Workbook
+from openpyxl.styles import borders
 
 class TextToList:
     def __init__(self,text,version,conversion_table,heroin="ヒロイン",similarity=1.0,name_detect=True):
@@ -488,7 +489,16 @@ class DeffDetecter:
                 for look_up_id,look_up_text in enumerate(look_up_text_list):
                     find_token = False
                     
-                    if self.similar(look_up_text["content"],text_normalized) == 1:
+                    # 改行を削除しておく
+                    look_up_text_normalized = look_up_text["content"].replace("\r\n","")
+                    look_up_text_normalized = look_up_text_normalized.replace("\n","")
+                    look_up_text_normalized = look_up_text_normalized.replace("\r","")
+
+                    text_normalized = text_normalized.replace("\r\n","")
+                    text_normalized = text_normalized.replace("\n","")
+                    text_normalized = text_normalized.replace("\r","")
+
+                    if self.similar(look_up_text_normalized,text_normalized) == 1:
                         find_token = True
                         deff_elem["type"] = "none"
                         if not look_up_id==0:
@@ -551,10 +561,10 @@ class DeffDetecter:
         ws['B1'] = 'row'
         ws['C1'] = 'キャラ名(元)'
         ws['D1'] = '元エクセルテキスト'
-        ws.column_dimensions['D'].width = 80
+        ws.column_dimensions['D'].width = 70
         ws['E1'] = 'キャラ名(変更先)'
         ws['F1'] = '変更部分'
-        ws.column_dimensions['F'].width = 80
+        ws.column_dimensions['F'].width = 70
         ws['G1'] = 'タイプ'
         print("this")
         for i,deff_elem in enumerate(self.deff_list):
@@ -571,22 +581,40 @@ class DeffDetecter:
                 color = "b9f6ca"
             else:
                 color = "FFFFFF"
+            border = borders.Border(top=borders.Side(style=borders.BORDER_HAIR, color='eeeeee'),
+                                 right=borders.Side(style=borders.BORDER_HAIR, color='eeeeee'),
+                                 left=borders.Side(style=borders.BORDER_HAIR, color='eeeeee'),
+                                 bottom=borders.Side(style=borders.BORDER_HAIR, color='eeeeee')
+                                 )
             fill = openpyxl.styles.PatternFill(patternType='solid',
                                    fgColor=color)
             ws.row_dimensions[i+3].height = line_height * 35
             ws['A{}'.format(i+3)] = deff_elem["sheet_name"]
             ws['A{}'.format(i+3)].fill = fill
+            ws['A{}'.format(i+3)].border = border
+
             ws['B{}'.format(i+3)] = deff_elem["row"]
             ws['B{}'.format(i+3)].fill = fill
-
+            ws['B{}'.format(i+3)].border = border
+            
             ws['C{}'.format(i+3)].fill = fill
+            ws['C{}'.format(i+3)].border = border
+
             ws['D{}'.format(i+3)] = deff_elem["original_text"]
             ws['D{}'.format(i+3)].fill = fill
+            ws['D{}'.format(i+3)].border = border
+
             ws['E{}'.format(i+3)] = ",".join(deff_elem["alt_name"])
             ws['E{}'.format(i+3)].fill = fill
+            ws['E{}'.format(i+3)].border = border
+
             ws['F{}'.format(i+3)] = deff_elem["alt_text"]
             ws['F{}'.format(i+3)].fill = fill
+            ws['F{}'.format(i+3)].border = border
+
             ws['G{}'.format(i+3)] = deff_elem["type"]
             ws['G{}'.format(i+3)].fill = fill
+            ws['G{}'.format(i+3)].border = border
+
         wb.save("./converted_file/{}.xlsx".format(waiting_id))
         return "converted_file/{}.xlsx".format(waiting_id)
