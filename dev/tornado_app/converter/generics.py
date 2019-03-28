@@ -515,7 +515,7 @@ class DeffDetecter:
                         self.text_list = self.text_list[(look_up_id+1):]
                         
                         break
-                    elif self.similar(look_up_text["content"],text_normalized) >= self.similarity:
+                    elif self.similar(look_up_text_normalized,text_normalized) >= self.similarity:
                         find_token = True
                         deff_elem["type"] = "alt"
                         deff_elem["alt_text"] = look_up_text["content"]
