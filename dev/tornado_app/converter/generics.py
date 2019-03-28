@@ -488,8 +488,6 @@ class DeffDetecter:
                 deff_elem["original_text"] = text
                 look_up_text_list = self.text_list[0:self.list_window]
                 for look_up_id,look_up_text in enumerate(look_up_text_list):
-                    find_token = False
-                    
                     # 改行を削除しておく
                     look_up_text_normalized = look_up_text["content"].replace("\r\n","")
                     look_up_text_normalized = look_up_text_normalized.replace("\n","")
@@ -498,9 +496,9 @@ class DeffDetecter:
                     text_normalized = text_normalized.replace("\r\n","")
                     text_normalized = text_normalized.replace("\n","")
                     text_normalized = text_normalized.replace("\r","")
-                    print(look_up_text_normalized , text_normalized)
                     if self.similar(look_up_text_normalized,text_normalized) == 1:
                         find_token = True
+                        # look_upの中の追加要素を探る
                         deff_elem["type"] = "none"
                         if not look_up_id==0:
                             for add_id in range(look_up_id):
@@ -509,9 +507,10 @@ class DeffDetecter:
                                     continue
                                 addition_elem = self.default_deff_elem.copy()
                                 addition_elem["type"] = "add"
-                                addition_elem["alt_text"] = look_up_text_list[add_id]["content"]
-                                addition_elem["alt_name"] = look_up_text_list[add_id]["name"]
+                                addition_elem["alt_text"] = add_text["content"]
+                                addition_elem["alt_name"] = add_text["name"]
                                 self.deff_list.append(addition_elem)
+                                
                         self.deff_list.append(deff_elem)
                         self.text_list = self.text_list[(look_up_id+1):]
                         
@@ -530,11 +529,15 @@ class DeffDetecter:
                                 addition_elem["alt_text"] = add_text["content"]
                                 addition_elem["alt_name"] =add_text["name"]
                                 self.deff_list.append(addition_elem)
-                            # self.deff_list.append(deff_elem)
-                            # self.text_list = self.text_list[(look_up_id+1):]
+                                
                         self.deff_list.append(deff_elem)
                         self.text_list = self.text_list[(look_up_id+1):]
                         break
+                    elif look_up_id>self.list_window:
+                        find_token = False
+                        break
+                    else:
+                        continue
                 if not find_token:
                     deff_elem["type"] = "del"
                     self.deff_list.append(deff_elem)
