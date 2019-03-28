@@ -506,8 +506,7 @@ class DeffDetecter:
                     if log:
                         print(look_up_text_normalized)
                     if self.similar(look_up_text_normalized,text_normalized) == 1:
-                        if log:
-                            print("SIMILAR")
+
                         find_token = True
                         # look_upの中の追加要素を探る
                         deff_elem["type"] = "none"
@@ -528,8 +527,6 @@ class DeffDetecter:
                         
                         break
                     elif len(text_normalized) > 4 and self.similar(look_up_text_normalized,text_normalized) >= self.similarity:
-                        if log:
-                            print("OO")
                         find_token = True
                         deff_elem["type"] = "alt"
                         deff_elem["alt_text"] = look_up_text["content"]
