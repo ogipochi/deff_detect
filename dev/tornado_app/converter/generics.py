@@ -96,6 +96,10 @@ class TextToList:
                 name_container = [self.heroin]
                 text_type = "hero"
                 continue
+            elif re.split(")(）（",text)[0] in self.conversion_table:
+                text_type = "dialog"
+                name_container = [self.conversion_table[re.split(")(）（",text)[0]]]
+                continue
             elif self.name_detect and len(name_container)==0 and len(list(text))<=6:
                 self.name_eval_list.append(text)
                 name_container = [text]
@@ -461,7 +465,6 @@ class DeffDetecter:
                 text_stock = text
             
         self.text_list  =text_list_pasted
-        print(self.text_list)
     def _detect_func_v2(self):
         self._paste_text_list_together()
         for i in sorted(self.data_frame_ids):
