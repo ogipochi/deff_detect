@@ -98,7 +98,8 @@ class TextToList:
                 continue
             elif re.split("[)(）（]",text)[0] in self.conversion_table:
                 text_type = "dialog"
-                name_container = [self.conversion_table[re.split(")(）（",text)[0]]]
+                name_container = [self.conversion_table[re.split("[)(）（]",text)[0]]]
+                txt_obj["remarks"] = re.split("[)(）（]",text)[-1]
                 continue
             elif self.name_detect and len(name_container)==0 and len(list(text))<=6:
                 self.name_eval_list.append(text)
