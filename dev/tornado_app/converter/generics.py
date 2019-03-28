@@ -488,7 +488,7 @@ class DeffDetecter:
                 deff_elem["row"] = int(row_num) + (self.initial_row - 1)
                 deff_elem["original_text"] = text
                 look_up_text_list = self.text_list[0:self.list_window]
-                if text == "身内でも手に負えないってこと":
+                if text == "……なるほどね":
                     log = True
                 else:
                     log = False
