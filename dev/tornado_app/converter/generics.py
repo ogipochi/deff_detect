@@ -346,7 +346,7 @@ import time
 
 
 class DeffDetecter:
-    def __init__(self , data_frames , data_frame_ids , text_list , version=1, list_window=30 , initial_row=3 , similarity=0.7 , dialog_sheet_col=7):
+    def __init__(self , data_frames , data_frame_ids , text_list , version=1, list_window=30 , initial_row=3 , similarity=0.6 , dialog_sheet_col=7):
         self.data_frames = data_frames
         self.data_frame_ids = data_frame_ids
         self.text_list = text_list
@@ -481,6 +481,7 @@ class DeffDetecter:
                     continue
                 text_normalized = re.sub(r"<color=#[a-z0-9]{6}>","",text)
                 text_normalized = text_normalized.replace("</color>","")
+                text_normalized = text_normalized.replace("＊名前＊","ヒロイン")
                 deff_elem = self.default_deff_elem.copy()
                 deff_elem["sheet_name"] = sheet_name
                 deff_elem["row"] = int(row_num) + (self.initial_row - 1)
@@ -497,7 +498,7 @@ class DeffDetecter:
                     text_normalized = text_normalized.replace("\r\n","")
                     text_normalized = text_normalized.replace("\n","")
                     text_normalized = text_normalized.replace("\r","")
-
+                    print(look_up_text_normalized , text_normalized)
                     if self.similar(look_up_text_normalized,text_normalized) == 1:
                         find_token = True
                         deff_elem["type"] = "none"
