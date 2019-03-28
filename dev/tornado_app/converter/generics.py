@@ -5,6 +5,7 @@ import numpy as np
 import math
 from openpyxl import Workbook
 from openpyxl.styles import borders
+import time
 
 class TextToList:
     def __init__(self,text,version,conversion_table,heroin="ヒロイン",similarity=1.0,name_detect=True):
@@ -478,8 +479,8 @@ class DeffDetecter:
                 text_type = row_data[1][2]
                 if not text_type in ["吹き出し","ポエム"]:
                     continue
-                if type(text) == type(0.6):
-                    continue
+                print(text)
+                time.sleep(2)
                 text_normalized = re.sub(r"<color=#[a-z0-9]{6}>","",text)
                 text_normalized = text_normalized.replace("</color>","")
                 text_normalized = text_normalized.replace("＊名前＊","ヒロイン")
@@ -488,10 +489,7 @@ class DeffDetecter:
                 deff_elem["row"] = int(row_num) + (self.initial_row - 1)
                 deff_elem["original_text"] = text
                 look_up_text_list = self.text_list[0:self.list_window]
-                if text == "……なるほどね":
-                    log = True
-                else:
-                    log = False
+
                 if len(text_normalized) == 0:
                     deff_elem["type"] = "blank"
                     self.deff_list.append(deff_elem)
