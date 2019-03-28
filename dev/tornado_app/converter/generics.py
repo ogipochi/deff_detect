@@ -96,7 +96,7 @@ class TextToList:
                 name_container = [self.heroin]
                 text_type = "hero"
                 continue
-            elif re.split(")(）（",text)[0] in self.conversion_table:
+            elif re.split("[)(）（]",text)[0] in self.conversion_table:
                 text_type = "dialog"
                 name_container = [self.conversion_table[re.split(")(）（",text)[0]]]
                 continue
