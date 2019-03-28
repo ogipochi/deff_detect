@@ -476,7 +476,7 @@ class DeffDetecter:
             for row_num , row_data in enumerate(df.iterrows()):
                 text = row_data[1][6]
                 text_type = row_data[1][2]
-                if not text_type=="吹き出し":
+                if not text_type in ["吹き出し","ポエム"]:
                     continue
                 if type(text) == type(0.6):
                     continue
