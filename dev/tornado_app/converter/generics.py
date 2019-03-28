@@ -503,8 +503,6 @@ class DeffDetecter:
                     #text_normalized = text_normalized.replace("\r\n","")
                     #text_normalized = text_normalized.replace("\n","")
                     #text_normalized = text_normalized.replace("\r","")
-                    if log:
-                        print(look_up_text_normalized)
                     if self.similar(look_up_text_normalized,text_normalized) == 1:
 
                         find_token = True
