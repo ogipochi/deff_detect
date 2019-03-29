@@ -453,34 +453,38 @@ class DeffDetecter:
             self.deff_list.append(addition_elem)
     def _paste_text_list_together(self):
         text_list_pasted = []
-        token = False
-        text_stock = None
+        token = True
+        
+        default_text = {"type":"","name":[],"content":"","remarks":""}
+        text_stock = default_text.copy()
         for text in self.text_list:
-            if text["type"] =="blank":
-                token = False
-                if text_stock:
+            #time.sleep(0.8)
+            if text["type"] in ["blank","addition"]:
+                if token:
                     text_list_pasted.append(text_stock)
+                token = False
+                text_stock = default_text.copy()
             elif token and text_stock["type"] == text["type"] and text_stock["name"] == text["name"]:
                 text_stock["content"] += "\n"
                 text_stock["content"] += text["content"]
             else:
                 token = True
                 text_stock = text
-            
+        print(text_list_pasted)
         self.text_list  =text_list_pasted
     def _detect_func_v2(self):
         self._paste_text_list_together()
         for i in sorted(self.data_frame_ids):
             sheet_name = self.data_frame_ids[i]
-            print(sheet_name)
             df = self.data_frames[sheet_name]
             for row_num , row_data in enumerate(df.iterrows()):
                 text = row_data[1][6]
                 text_type = row_data[1][2]
                 if not text_type in ["吹き出し","ポエム"]:
                     continue
-                print(text)
-                time.sleep(2)
+                if type(text) == type(0.6):
+                    continue
+                #time.sleep(0.5)
                 text_normalized = re.sub(r"<color=#[a-z0-9]{6}>","",text)
                 text_normalized = text_normalized.replace("</color>","")
                 text_normalized = text_normalized.replace("＊名前＊","ヒロイン")
@@ -489,6 +493,7 @@ class DeffDetecter:
                 deff_elem["row"] = int(row_num) + (self.initial_row - 1)
                 deff_elem["original_text"] = text
                 look_up_text_list = self.text_list[0:self.list_window]
+                
 
                 if len(text_normalized) == 0:
                     deff_elem["type"] = "blank"
@@ -522,9 +527,10 @@ class DeffDetecter:
                                 
                         self.deff_list.append(deff_elem)
                         self.text_list = self.text_list[(look_up_id+1):]
-                        
+                        #if text in ["……行っちゃったね","目が言ってんだよ。","じゃーな、言うなよ！"]:
+                        #print(look_up_text_list[:20])
                         break
-                    elif len(text_normalized) > 4 and self.similar(look_up_text_normalized,text_normalized) >= self.similarity:
+                    elif len(text_normalized) > 5 and self.similar(look_up_text_normalized,text_normalized) > self.similarity:
                         find_token = True
                         deff_elem["type"] = "alt"
                         deff_elem["alt_text"] = look_up_text["content"]
@@ -542,14 +548,25 @@ class DeffDetecter:
                         self.deff_list.append(deff_elem)
                         self.text_list = self.text_list[(look_up_id+1):]
                         break
-                    elif look_up_id>self.list_window:
+                    elif look_up_id>self.list_window or look_up_id==(len(self.text_list)-1):
+                        find_token = False
+                        break
+                    elif len(self.text_list)<=1:
                         find_token = False
                         break
                     else:
                         continue
-                if not find_token:
-                    deff_elem["type"] = "del"
-                    self.deff_list.append(deff_elem)
+                try:
+                    if not find_token:
+                        deff_elem["type"] = "del"
+                        self.deff_list.append(deff_elem)
+                except Exception as e :
+                    print(e)
+                    continue
+                    #time.sleep(0.8)
+                    #print(self.text_list)
+                    #print(text)
+                    #print(len(self.text_list))
         for add_id,add_text in enumerate(self.text_list):
             if add_text["type"] in ["blank","addition"]:
                 continue
@@ -592,6 +609,8 @@ class DeffDetecter:
                 color = "82b1ff"
             elif deff_elem["type"] == "alt":
                 color = "b9f6ca"
+            elif deff_elem["type"]=="blank":
+                color = "b388ff"
             else:
                 color = "FFFFFF"
             border = borders.Border(top=borders.Side(style=borders.BORDER_HAIR, color='eeeeee'),
